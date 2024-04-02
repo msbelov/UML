@@ -1,0 +1,90 @@
+@startuml
+actor Administrator
+actor Teacher
+actor Student
+
+participant "Client" as Client
+participant "Application Server" as AppServer
+participant "Database Server" as DBServer
+
+note left of Administrator: Administrator interacts\nwith the system
+note left of Teacher: Teacher interacts\nwith the system
+note left of Student: Student interacts\nwith the system
+
+== User Authentication ==
+
+Administrator -> Client: Login
+Client -> AppServer: Authenticate()
+AppServer -> DBServer: Authenticate()
+DBServer --> AppServer: User Data
+AppServer --> Client: User Object
+Client --> Administrator: Logged in
+
+Teacher -> Client: Login
+Client -> AppServer: Authenticate()
+AppServer -> DBServer: Authenticate()
+DBServer --> AppServer: User Data
+AppServer --> Client: User Object
+Client --> Teacher: Logged in
+
+Student -> Client: Login
+Client -> AppServer: Authenticate()
+AppServer -> DBServer: Authenticate()
+DBServer --> AppServer: User Data
+AppServer --> Client: User Object
+Client --> Student: Logged in
+
+== Managing User Accounts ==
+
+Administrator -> Client: Manage User Accounts
+Client -> AppServer: Send Manage User Accounts Request
+AppServer --> Client: User Accounts Data
+Client --> Administrator: Display User Accounts
+
+== Assigning Teacher to Discipline ==
+
+Administrator -> Client: Assign Teacher to Discipline
+Client -> AppServer: Send Assign Teacher Request
+AppServer --> DBServer: Update Teacher-Discipline Mapping
+DBServer --> AppServer: Confirmation
+AppServer --> Client: Success Message
+
+== Assigning Students to Group ==
+
+Administrator -> Client: Assign Students to Group
+Client -> AppServer: Send Assign Students Request
+AppServer --> DBServer: Update Student-Group Mapping
+DBServer --> AppServer: Confirmation
+AppServer --> Client: Success Message
+
+== Inputting Grades ==
+
+Teacher -> Client: Input Grades
+Client -> AppServer: Send Input Grades Request
+AppServer --> DBServer: Update Grades
+DBServer --> AppServer: Confirmation
+AppServer --> Client: Success Message
+
+== Viewing Own Performance ==
+
+Student -> Client: View Own Performance
+Client -> AppServer: Send View Performance Request
+AppServer --> DBServer: Retrieve Performance Data
+DBServer --> AppServer: Performance Data
+AppServer --> Client: Display Performance Data
+
+== Logging Out ==
+
+Administrator -> Client: Logout
+Client -> AppServer: Send Logout Request
+AppServer --> Client: Logout Confirmation
+
+Teacher -> Client: Logout
+Client -> AppServer: Send Logout Request
+AppServer --> Client: Logout Confirmation
+
+Student -> Client: Logout
+Client -> AppServer: Send Logout Request
+AppServer --> Client: Logout Confirmation
+
+@enduml

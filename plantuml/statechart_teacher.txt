@@ -1,0 +1,22 @@
+@startuml
+[*] --> LoggedOut
+
+state LoggedOut {
+  [*] --> Idle
+  Idle --> LoggedIn : login()
+}
+
+state LoggedIn {
+  LoggedIn --> Idle : logout()
+  LoggedIn --> InputtingGrades : inputGrades()
+  InputtingGrades --> LoggedIn : back()
+  LoggedIn --> EditingGrades : editGrades()
+  EditingGrades --> LoggedIn : back()
+  LoggedIn --> ViewingStats : viewStatistics()
+  ViewingStats --> LoggedIn : back()
+  LoggedIn --> ViewingGroups : viewGroups()
+  ViewingGroups --> LoggedIn : back()
+}
+
+[*] --> LoggedOut
+@enduml

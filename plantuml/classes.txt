@@ -1,0 +1,117 @@
+@startuml
+
+package "Client" {
+  class User {
+    - id: int
+    - username: string
+    - password: string
+    - email: string
+    + login(username: string, password: string): boolean
+    + logout(): void
+    + changePassword(newPassword: string): boolean
+  }
+
+  class Administrator {
+    - id: int
+    - user: User
+    + manageUserAccounts()
+    + assignTeacherToDiscipline(teacher: Teacher, discipline: Discipline): void
+    + assignStudentsToGroup(students: List<Student>, group: Group): void
+    + createSpecialty(name: string): void
+    + createGroup(name: string, specialty: Specialty): void
+  }
+
+  class Teacher {
+    - id: int
+    - user: User
+    + inputGrades(discipline: Discipline, grades: List<Grade>): void
+    + editGrades(discipline: Discipline, grades: List<Grade>): void
+    + viewStatistics(discipline: Discipline): Statistics
+    + viewGroups(): List<Group>
+  }
+
+  class Student {
+    - id: int
+    - user: User
+    + viewOwnPerformance(): Performance
+    + viewGrades(): List<Grade>
+    + viewSchedule(): Schedule
+  }
+}
+
+package "Application Server" {
+  class AuthenticationService {
+    + authenticate(username: string, password: string): User
+    + logout(user: User): void
+  }
+
+  class GradesService {
+    + inputGrades(teacher: Teacher, discipline: Discipline, grades: List<Grade>): void
+    + editGrades(teacher: Teacher, discipline: Discipline, grades: List<Grade>): void
+    + viewStatistics(teacher: Teacher, discipline: Discipline): Statistics
+    + viewPerformance(student: Student): Performance
+  }
+
+  class ScheduleService {
+    + getStudentSchedule(student: Student): Schedule
+  }
+}
+
+package "Database Server" {
+  class Database {
+    + addUser(user: User): void
+    + updateUser(user: User): void
+    + deleteUser(userId: int): void
+    + addGrade(grade: Grade): void
+    + updateGrade(grade: Grade): void
+    + deleteGrade(gradeId: int): void
+  }
+}
+
+class Specialty {
+  - id: int
+  - name: string
+}
+
+class Group {
+  - id: int
+  - name: string
+  + students: List<Student>
+}
+
+class Discipline {
+  - id: int
+  - name: string
+  - teacher: Teacher
+  - group: Group
+}
+
+class Grade {
+  - id: int
+  - value: float
+  - student: Student
+  - discipline: Discipline
+}
+
+User "1" -- "1" Administrator : has
+User "1" -- "1" Teacher : has
+User "1" -- "1" Student : has
+
+Administrator -- AuthenticationService : uses
+Teacher -- GradesService : uses
+Student -- GradesService : uses
+Student -- ScheduleService : uses
+
+Administrator "1" -- "*" User : manages
+Teacher "1" -- "*" Discipline : teaches
+Student "1" -- "*" Grade : has
+
+Group "1" -- "*" Student : has
+Specialty "1" -- "*" Discipline : includes
+Discipline "1" -- "*" Grade : has
+
+AuthenticationService -- Database : uses
+GradesService -- Database : uses
+ScheduleService -- Database : uses
+
+@enduml

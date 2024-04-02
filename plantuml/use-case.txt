@@ -1,0 +1,58 @@
+@startuml
+left to right direction
+
+actor Administrator
+actor Teacher
+actor Student
+
+rectangle "General Use Cases" {
+  usecase "Login"
+  usecase "Logout"
+  usecase "Change Password"
+}
+
+rectangle "Administrator Use Cases" {
+  usecase "Manage User Accounts" as manage_accounts
+  usecase "Assign Teacher to Discipline" as assign_teacher
+  usecase "Assign Students to Group" as assign_students
+  usecase "Create Specialty" as create_specialty
+  usecase "Create Group" as create_group
+}
+
+rectangle "Teacher Use Cases" {
+  usecase "Input Grades" as input_grades
+  usecase "Edit Grades" as edit_grades
+  usecase "View Statistics" as view_statistics
+  usecase "View Groups" as view_groups
+}
+
+rectangle "Student Use Cases" {
+  usecase "View Own Performance" as view_performance
+  usecase "View Grades" as view_grades
+  usecase "View Schedule" as view_schedule
+}
+
+Administrator --> (Login)
+Administrator --> (Logout)
+Administrator --> (Change Password)
+Administrator --> manage_accounts
+Administrator --> assign_teacher
+Administrator --> assign_students
+Administrator --> create_specialty
+Administrator --> create_group
+
+Teacher --> (Login)
+Teacher --> (Logout)
+Teacher --> (Change Password)
+Teacher --> input_grades
+Teacher --> edit_grades
+Teacher --> view_statistics
+Teacher --> view_groups
+
+Student --> (Login)
+Student --> (Logout)
+Student --> (Change Password)
+Student --> view_performance
+Student --> view_grades
+Student --> view_schedule
+@enduml

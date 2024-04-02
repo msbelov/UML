@@ -1,0 +1,24 @@
+@startuml
+[*] --> LoggedOut
+
+state LoggedOut {
+  [*] --> Idle
+  Idle --> LoggedIn : login()
+}
+
+state LoggedIn {
+  LoggedIn --> Idle : logout()
+  LoggedIn --> ManagingAccounts : manageUserAccounts()
+  ManagingAccounts --> Idle : exit()
+  ManagingAccounts --> AssignTeacher : assignTeacherToDiscipline()
+  AssignTeacher --> ManagingAccounts : back()
+  ManagingAccounts --> AssignStudents : assignStudentsToGroup()
+  AssignStudents --> ManagingAccounts : back()
+  ManagingAccounts --> CreateSpecialty : createSpecialty()
+  CreateSpecialty --> ManagingAccounts : back()
+  ManagingAccounts --> CreateGroup : createGroup()
+  CreateGroup --> ManagingAccounts : back()
+}
+
+[*] --> LoggedOut
+@enduml

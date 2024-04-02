@@ -1,0 +1,55 @@
+@startuml
+
+|Main|
+start
+:User logs in;
+if (User is Administrator?) then (yes)
+    :Administrator manages user accounts;
+    if (Manage User Accounts?) then (yes)
+        :Administrator creates or modifies user accounts;
+        if (Create Specialty?) then (yes)
+            :Administrator creates specialty;
+        endif
+        if (Create Group?) then (yes)
+            :Administrator creates group;
+        endif
+        if (Assign Teacher to Discipline?) then (yes)
+            :Administrator assigns teacher to discipline;
+        endif
+        if (Assign Students to Group?) then (yes)
+            :Administrator assigns students to group;
+        endif
+    endif
+elseif (User is Teacher?) then (yes)
+    :Teacher inputs grades;
+    if (Input Grades?) then (yes)
+        :Teacher selects discipline;
+        :Teacher enters grades for each student;
+        if (Grades Input Successfully?) then (yes)
+            :System stores grades;
+        else (no)
+            :System displays error message;
+        endif
+    endif
+    :Teacher edits grades;
+    if (Edit Grades?) then (yes)
+        :Teacher selects discipline;
+        :Teacher selects grades to edit;
+        :Teacher modifies selected grades;
+        if (Grades Edited Successfully?) then (yes)
+            :System updates grades;
+        else (no)
+            :System displays error message;
+        endif
+    endif
+    :Teacher views statistics for a discipline;
+    :Teacher views groups;
+elseif (User is Student?) then (yes)
+    :Student views own performance;
+    :Student views grades;
+    :Student views schedule;
+endif
+:User logs out;
+stop
+
+@enduml
